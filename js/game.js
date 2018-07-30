@@ -14,6 +14,11 @@ var Game = {
 
   pick: new Array(),
 
+  playerPoints: new Array(),
+
+
+  playersNames: new Array('l\'humain', 'Georges', 'Rick', 'Marty'),
+
   initCard: function(id, family, member, img){
     this.id = id;
     this.family = family;
@@ -25,6 +30,7 @@ var Game = {
   initGame: function(){
     this.families.push('Europe', 'Afrique Noire', 'Asie', 'Inde', 'Amérique du Sud', 'Grand Nord', 'Pays Arabes');
     this.members.push('Le grand-père', 'La grand-mère', 'Le père', 'La mère', 'Le fils', 'La fille');
+
 
     // Création des cartes
     var familyMarker = 0;
@@ -52,6 +58,7 @@ var Game = {
     for (var j = 0; j < this.playerNumber; j++){
       aPlayer = new Array();
       this.players.push(aPlayer);
+      this.playerPoints.push(0);
       // Distribution
       for (var k = 0; k < this.startCardNumber; k++){
         this.players[j].push(this.allCards[playerMarker + k]);
@@ -109,7 +116,7 @@ var Game = {
     var playerHandTemp = this.players[player];
 
     for (var i = 0; i < this.players[target].length; i++){
-      if (this.players[target][i].family == family && this.players[target][i].member == this.members[member]) {
+      if (this.players[target][i].family == family && this.players[target][i].member == member) {
         var id = this.players[target][i].id
         this.players[target] = [];
 
@@ -149,6 +156,18 @@ var Game = {
     this.orderHand(player);
     console.log(this.players);
     console.log(this.pick);
+  },
+
+  removeFamilyFromHand(playerS, familyS){
+    var playerHandTemp = this.players[playerS];
+
+    this.players[playerS] = [];
+
+    for (var i = 0; i < playerHandTemp.length; i++){
+      if (playerHandTemp[i].family != familyS) {
+        this.players[playerS].push(playerHandTemp[i]);
+      }
+    }
   }
 
 }
