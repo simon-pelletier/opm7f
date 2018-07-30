@@ -12,3 +12,8 @@ function shuffle(a) {
     }
     return a;
 }
+
+function gameMasterSay(msg){
+  var gameMasterElt = document.getElementById('gameMaster');
+  gameMasterElt.innerHTML = msg;
+}

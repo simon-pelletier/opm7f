@@ -1,4 +1,3 @@
-
 var Card = {
   initCard: function(id, family, member, img){
     this.id = id;
