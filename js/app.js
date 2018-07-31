@@ -27,8 +27,8 @@ function gameFlow(){
   //endTurn();
   if (endTurn() != false) {
     // POSER FAMILLE
-    // SUPPRIMER CARTE PLAYER
     console.log('FAMILY !!!');
+
   }
   if (Game.pick.length > 0) {
     if (gameStarted) {
@@ -38,7 +38,7 @@ function gameFlow(){
       }
     } else {
       var first = getRandomNumber(0, Game.players.length-1);
-      console.log(Game.players);
+      //console.log(Game.players);
       gameMasterSay('C\'est ' + Game.playersNames[first] + ' qui commence !');
       turn = first;
       gameStarted = true;
@@ -130,44 +130,19 @@ function botsTurn(turn){
   }
   memberIa = membersPossibilities[getRandomNumber(0, membersPossibilities.length-1)];
 
-  console.log('Ennemi : ' + enemyIa);
-  console.log('Famille : ' + familyIa);
-  console.log('Membre : ' + memberIa);
+  //console.log('Ennemi : ' + enemyIa);
+  //console.log('Famille : ' + familyIa);
+  //console.log('Membre : ' + memberIa);
 
-  //isMatching(player, target, family, member)
   if (Game.isMatching(bot, enemyIa, familyIa, memberIa)){
 
   } else {
     Game.pickCard(bot);
   }
-  //console.log(Game.players[enemyIa]);
 
   updateBoard();
 
   gameFlow();
-
-  /*var cardWantedId;
-  // Trouve l'ID de la carte voulue
-  for (var f = 0; f < Game.allCards.length; f++){
-    if (Game.allCards[f].family == familyIa && Game.allCards[f].member == memberIa) {
-      cardWantedId = Game.allCards[f].id;
-    }
-  }
-
-  var finalResult = false;
-  // Vérifie si l'ennemi selectionné a la carte
-  for (var g = 0; g < Game.players[enemyIa].length; g++){
-    if (Game.players[enemyIa][g].id == cardWantedId) {
-      finalResult = true;
-    }
-  }
-
-  if (finalResult == true) {
-    // ON TRANSFERT LA CARTE
-  } else {
-    // ON PIOCHE UNE CARTE
-  }*/
-
 }
 
 
@@ -283,6 +258,8 @@ function updateBoard(){
   board.innerHTML = '';
 
   for (var i = 0; i < Game.playerNumber; i++){
+    var cardContainerElt = document.createElement('div');
+    cardContainerElt.className = 'cardContainer';
     var aPlayer = document.createElement('div');
     aPlayer.className = 'player';
     aPlayer.id = 'player' + i;
@@ -291,6 +268,10 @@ function updateBoard(){
     } else {
       aPlayer.className = 'bot';
     }
+    var playerNameElt = document.createElement('div');
+    playerNameElt.innerHTML = Game.playersNames[i] + '<div class="infoPoints">Points : ' + Game.playerPoints[i] + '</div>';
+    playerNameElt.id = 'infos' + i;
+    playerNameElt.className = 'infos';
     var rotation = -10;
     for (var j = 0; j < Game.players[i].length; j++){
       var anImage = document.createElement('img');
@@ -308,9 +289,11 @@ function updateBoard(){
       }
       anImage.id = Game.players[i][j].id;
 
-      aPlayer.appendChild(anImage);
+      cardContainerElt.appendChild(anImage);
 
     }
+    aPlayer.appendChild(cardContainerElt);
+    aPlayer.appendChild(playerNameElt);
     board.appendChild(aPlayer);
   }
 
@@ -333,7 +316,7 @@ function updateBoard(){
   board.appendChild(thePick);
   resize();
 }
-
+setTimeout(function(){ resize(); }, 100);
 
 function resize() {
     heightG = window.innerHeight;
@@ -345,8 +328,35 @@ function resize() {
 
     var gameMaster = document.getElementById('gameMaster');
     gameMaster.style.left = (widthG / 2) - (300/2) + 'px';
-    gameMaster.style.top = (heightG / 2) - 150 + 'px';
+    gameMaster.style.top = (heightG / 2) - 140 + 'px';
 
+    var playerElt = document.getElementById('player0');
+    var playerWidth = playerElt.offsetWidth;
+    playerElt.style.left = (widthG / 2) - (playerWidth/2) + 'px';
+
+    var player1Container = document.getElementById('player1').childNodes[0];
+    player1Container.style.top = (heightG/2) - 50 + 'px';
+
+    var player3Container = document.getElementById('player3').childNodes[0];
+    player3Container.style.top = (heightG/2) - 130 + 'px';
+
+
+
+/*
+    var player1Elt = document.getElementById('player1');
+    player1EltWidth = player1Elt.offsetWidth;
+    player1EltHeight = player1Elt.offsetHeight;
+    player1Elt.style.top = (heightG / 2) - (player1EltHeight/2) + 'px';
+
+    var player2Elt = document.getElementById('player2');
+    player2EltWidth = player2Elt.offsetWidth;
+    player2EltHeight = player2Elt.offsetHeight;
+    player2Elt.style.left = (widthG / 2) - (player2EltWidth/2) + 'px';
+
+    var player3Elt = document.getElementById('player3');
+    player3EltWidth = player3Elt.offsetWidth;
+    player3EltHeight = player3Elt.offsetHeight;
+    player3Elt.style.top = (heightG / 2) - (player3EltHeight/2) + 'px';*/
 }
 
 window.onresize = resize;

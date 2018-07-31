@@ -17,7 +17,7 @@ var Game = {
   playerPoints: new Array(),
 
 
-  playersNames: new Array('l\'humain', 'Georges', 'Rick', 'Marty'),
+  playersNames: new Array('Humain', 'Georges', 'Rick', 'Marty'),
 
   initCard: function(id, family, member, img){
     this.id = id;
@@ -80,8 +80,8 @@ var Game = {
     }
 
     // Affichage du jeu
-    console.log(this.players);
-    console.log(this.pick);
+    //console.log(this.players);
+    //console.log(this.pick);
 
   },
 
@@ -154,8 +154,8 @@ var Game = {
       }
     }
     this.orderHand(player);
-    console.log(this.players);
-    console.log(this.pick);
+    //console.log(this.players);
+    //console.log(this.pick);
   },
 
   removeFamilyFromHand(playerS, familyS){
