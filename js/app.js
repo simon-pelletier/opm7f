@@ -6,7 +6,9 @@ var member;
 var turn;
 var gameStarted = false;
 
-var playingTimerSimulator = 3000;
+var playingTimerSimulator = 1000;
+
+var askedCard = false;
 
 var heightG = window.innerHeight;
 var widthG = window.innerWidth;
@@ -32,7 +34,12 @@ function gameFlow(){
   }
   if (Game.pick.length > 0) {
     if (gameStarted) {
-      turn++;
+      if (askedCard) {
+
+      } else {
+        turn++;
+      }
+
       if (turn >= Game.players.length) {
         turn = 0;
       }
@@ -62,6 +69,9 @@ function endGame(){
 }
 
 function botsTurn(turn){
+  var playerName = document.getElementById('infos' + turn);
+  playerName.style.color = 'rgb(255, 0, 107)';
+
   var botHand = Game.players[turn];
   var bot = turn;
   var enemyIa;
@@ -133,16 +143,28 @@ function botsTurn(turn){
   //console.log('Ennemi : ' + enemyIa);
   //console.log('Famille : ' + familyIa);
   //console.log('Membre : ' + memberIa);
+  function timerSimulator(){
+    if (Game.isMatching(bot, enemyIa, familyIa, memberIa)){
+      gameMasterSay('Et c\'est gagné pour ' + Game.playersNames[turn]);
+      askedCard = true;
+    } else {
+      Game.pickCard(bot);
+      gameMasterSay('Perdu ! ' + Game.playersNames[turn] + ' pioche...');
+      // VERIFIER SI PIOCHE BONNE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      askedCard = false;
+    }
 
-  if (Game.isMatching(bot, enemyIa, familyIa, memberIa)){
+    function result(){
+      updateBoard();
+      gameFlow();
+    }
 
-  } else {
-    Game.pickCard(bot);
+
+    setTimeout(result, playingTimerSimulator);
   }
+  gameMasterSay(Game.playersNames[turn] + ' demande à ' + Game.playersNames[enemyIa] + ' ' + memberIa + ' de la famille ' + familyIa);
 
-  updateBoard();
-
-  gameFlow();
+  setTimeout(timerSimulator, playingTimerSimulator);
 }
 
 
@@ -161,13 +183,21 @@ function selectPlayer(turn){
 function verification(){
   if (Game.isMatching(0, target, family, member)) {
     //console.log('Bravo ! Touché !');
+    askedCard = true;
+    gameMasterSay('Gagné ! C\'est encore à vous...');
   } else {
     Game.pickCard(0);
     //console.log('Non, vous avez perdu !');
+    gameMasterSay('Perdu ! Vous piochez...');
+    askedCard = false;
   }
-  updateBoard();
-  //botsTurn();
-  gameFlow();
+
+  function result(){
+    updateBoard();
+    //botsTurn();
+    gameFlow();
+  }
+  setTimeout(result, playingTimerSimulator);
 }
 
 function cardSelection(){
@@ -334,11 +364,18 @@ function resize() {
     var playerWidth = playerElt.offsetWidth;
     playerElt.style.left = (widthG / 2) - (playerWidth/2) + 'px';
 
-    var player1Container = document.getElementById('player1').childNodes[0];
-    player1Container.style.top = (heightG/2) - 50 + 'px';
+    var player1Base = document.getElementById('player1');
+    if (player1Base) {
+      var player1Container = document.getElementById('player1').childNodes[0];
+      player1Container.style.top = (heightG/2) - 50 + 'px';
+    }
 
-    var player3Container = document.getElementById('player3').childNodes[0];
-    player3Container.style.top = (heightG/2) - 130 + 'px';
+    var player3Base = document.getElementById('player3');
+    if (player3Base) {
+      var player3Container = document.getElementById('player3').childNodes[0];
+      player3Container.style.top = (heightG/2) - 130 + 'px';
+    }
+
 
 
 

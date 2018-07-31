@@ -10,7 +10,7 @@ var Game = {
   members: new Array(),
 
   players: new Array(),
-  playerNumber: Number = 4,
+  playerNumber: Number = 2,
 
   pick: new Array(),
 
