@@ -151,7 +151,23 @@ function botsTurn(turn){
       Game.pickCard(bot);
       gameMasterSay('Perdu ! ' + Game.playersNames[turn] + ' pioche...');
       // VERIFIER SI PIOCHE BONNE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      askedCard = false;
+
+      var cardAskedId = Game.getId(familyIa, memberIa);
+      if (Game.pick[0]) {
+        var cardPickedId = Game.pick[0].id;
+        if (Game.isMatchingPick(cardAskedId, cardPickedId)) {
+          gameMasterSay('Incroyable ! Bonne pioche !!!');
+          askedCard = true;
+        } else {
+          askedCard = false;
+        }
+      } else {
+        askedCard = false;
+      }
+
+
+
+      //askedCard = false;
     }
 
     function result(){
@@ -186,13 +202,25 @@ function verification(){
     askedCard = true;
     gameMasterSay('Gagné ! C\'est encore à vous...');
   } else {
-  //var card = Game.pickCard(0);
+    //var card = Game.pickCard(0);
+    gameMasterSay('Perdu ! Vous piochez...');
+
     var card = Game.pick[0];
+    showPickedCard(card);
+
+    var cardAskedId = Game.getId(family, member);
+    var cardPickedId = Game.pick[0].id;
+    if (Game.isMatchingPick(cardAskedId, cardPickedId)) {
+      gameMasterSay('Incroyable ! Bonne pioche !!!');
+      askedCard = true;
+    } else {
+      askedCard = false;
+    }
+
     Game.pickCard(0);
     //console.log('Non, vous avez perdu !');
-    gameMasterSay('Perdu ! Vous piochez...');
-    showPickedCard(card);
-    askedCard = false;
+
+
   }
 
   function showPickedCard(card){

@@ -101,6 +101,14 @@ var Game = {
     }
   },
 
+  getId(family, member){
+    for (var i = 0; i < this.allCards.length; i++){
+      if (this.allCards[i].family == family && this.allCards[i].member == this.members[member]) {
+        return this.allCards[i].id;
+      }
+    }
+  },
+
   alreadyHave(family, member){
     result = false;
     for (var i = 0; i < this.players[0].length; i++){
@@ -133,6 +141,14 @@ var Game = {
       } else {
 
       }
+    }
+  },
+
+  isMatchingPick(asked, obtained){
+    if (asked == obtained) {
+      return true;
+    } else {
+      return false;
     }
   },
 
