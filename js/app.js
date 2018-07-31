@@ -186,10 +186,20 @@ function verification(){
     askedCard = true;
     gameMasterSay('Gagné ! C\'est encore à vous...');
   } else {
+  //var card = Game.pickCard(0);
+    var card = Game.pick[0];
     Game.pickCard(0);
     //console.log('Non, vous avez perdu !');
     gameMasterSay('Perdu ! Vous piochez...');
+    showPickedCard(card);
     askedCard = false;
+  }
+
+  function showPickedCard(card){
+    var cardElt = document.createElement('img');
+    cardElt.src = card.img;
+    cardElt.id = 'pickedCard';
+    board.appendChild(cardElt);
   }
 
   function result(){

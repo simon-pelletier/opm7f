@@ -215,3 +215,14 @@ body{
   font-size: 16px;
   color: #9d9d9d;
 }
+
+#pickedCard{
+  z-index: 20;
+  position: absolute;
+  top: calc(50vh - 200px);
+  left: calc(50vw - 150px);
+  -webkit-box-shadow: 17px 28px 5px 0px rgba(0,0,0,0.25);
+  -moz-box-shadow: 17px 28px 5px 0px rgba(0,0,0,0.25);
+  box-shadow: 17px 28px 5px 0px rgba(0,0,0,0.25);
+
+}

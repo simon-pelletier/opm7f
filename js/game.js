@@ -151,9 +151,11 @@ var Game = {
 
       } else {
         this.pick.push(pickTemp[i]);
+        //return (this.pick[0]);
       }
     }
     this.orderHand(player);
+
     //console.log(this.players);
     //console.log(this.pick);
   },
