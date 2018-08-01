@@ -103,7 +103,7 @@ var Game = {
 
   getId(family, member){
     for (var i = 0; i < this.allCards.length; i++){
-      if (this.allCards[i].family == family && this.allCards[i].member == this.members[member]) {
+      if (this.allCards[i].family == family && this.allCards[i].member == member) {
         return this.allCards[i].id;
       }
     }
@@ -145,6 +145,7 @@ var Game = {
   },
 
   isMatchingPick(asked, obtained){
+    //console.log(asked + ' ' + obtained);
     if (asked == obtained) {
       return true;
     } else {

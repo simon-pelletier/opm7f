@@ -6,7 +6,7 @@ var member;
 var turn;
 var gameStarted = false;
 
-var playingTimerSimulator = 1000;
+var playingTimerSimulator = 2000;
 
 var askedCard = false;
 
@@ -27,11 +27,12 @@ startGame();
 
 function gameFlow(){
   //endTurn();
-  if (endTurn() != false) {
+  /*if (endTurn() != false) {
     // POSER FAMILLE
     console.log('FAMILY !!!');
 
-  }
+  }*/
+  console.log(Game.pick[0]);
   if (Game.pick.length > 0) {
     if (gameStarted) {
       if (askedCard) {
@@ -148,7 +149,7 @@ function botsTurn(turn){
       gameMasterSay('Et c\'est gagné pour ' + Game.playersNames[turn]);
       askedCard = true;
     } else {
-      Game.pickCard(bot);
+
       gameMasterSay('Perdu ! ' + Game.playersNames[turn] + ' pioche...');
       // VERIFIER SI PIOCHE BONNE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -165,12 +166,13 @@ function botsTurn(turn){
         askedCard = false;
       }
 
-
+      Game.pickCard(bot);
 
       //askedCard = false;
     }
 
     function result(){
+      endTurn();
       updateBoard();
       gameFlow();
     }
@@ -231,6 +233,7 @@ function verification(){
   }
 
   function result(){
+    endTurn();
     updateBoard();
     //botsTurn();
     gameFlow();
@@ -349,7 +352,8 @@ function updateBoard(){
 
       } else {
         anImage.className = 'card';
-        anImage.src = './img/cards/back.jpg';
+        anImage.src = Game.players[i][j].img;
+        //anImage.src = './img/cards/back.jpg';
 
         //var r = getRandomNumber(-5, 5);
         anImage.style.transform = 'rotate(' + rotation + 'deg)';
@@ -370,7 +374,8 @@ function updateBoard(){
   for (var k = 0; k < Game.pick.length; k++){
     var anImage = document.createElement('img');
     anImage.className = 'pick';
-    anImage.src = './img/cards/back.jpg';
+    anImage.src = Game.pick[k].img;
+    //anImage.src = './img/cards/back.jpg';
     var r = getRandomNumber(-5, 5);
     anImage.style.transform = 'rotate(' + r + 'deg)';
     thePick.appendChild(anImage);
