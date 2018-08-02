@@ -105,14 +105,23 @@ body{
   transform: perspective(500px) rotateX(20deg) rotateY(0deg) rotateZ(0deg);
 }
 #memberSelector{
-  background-color: #d339d6;
+  //background-color: #d339d6;
+  text-align: left;
   padding: 10px;
   position: absolute;
-  left: 50vw;
-  top: 50vh;
+  left: calc(50vw + 100px);
+  top: calc(50vh - 60px);
+  color: #d9d9d9;
+  font-weight: 600;
+  font-size: 1.2em;
 }
 .member{
+  transition: 0.3s;
   cursor: pointer;
+}
+.member:hover{
+  transition: 0.3s;
+  font-size: 1.5em;
 }
 .player{
   z-index: 1;

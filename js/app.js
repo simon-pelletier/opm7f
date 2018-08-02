@@ -32,7 +32,7 @@ function gameFlow(){
     console.log('FAMILY !!!');
 
   }*/
-  console.log(Game.pick[0]);
+  //console.log(Game.pick[0]);
   if (Game.pick.length > 0) {
     if (gameStarted) {
       if (askedCard) {
