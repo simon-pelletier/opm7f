@@ -4,18 +4,24 @@ var Game = {
   allCards: new Array(),
   cardsNumber: Number = 42,
 
-  startCardNumber: Number = 6,
+  startCardNumber: Number = 12,
 
   families: new Array(),
   members: new Array(),
 
   players: new Array(),
-  playerNumber: Number = 4,
+  playerNumber: Number = 2,
 
   pick: new Array(),
 
   playerPoints: new Array(),
 
+  p0families: new Array(),
+  p1families: new Array(),
+  p2families: new Array(),
+  p3families: new Array(),
+
+  miniFamilies: new Array(),
 
   playersNames: new Array('Humain', 'Georges', 'Rick', 'Marty'),
 
@@ -30,6 +36,8 @@ var Game = {
   initGame: function(){
     this.families.push('Europe', 'Afrique Noire', 'Asie', 'Inde', 'Amérique du Sud', 'Grand Nord', 'Pays Arabes');
     this.members.push('Le grand-père', 'La grand-mère', 'Le père', 'La mère', 'Le fils', 'La fille');
+
+    this.miniFamilies.push('mini_europe', 'mini_afrique', 'mini_asie', 'mini_inde', 'mini_amerique', 'mini_nord', 'mini_paysarabes');
 
 
     // Création des cartes
@@ -186,6 +194,14 @@ var Game = {
     for (var i = 0; i < playerHandTemp.length; i++){
       if (playerHandTemp[i].family != familyS) {
         this.players[playerS].push(playerHandTemp[i]);
+      }
+    }
+  },
+
+  getFamilyId(familyName){
+    for (var i = 0; i < this.families.length; i++){
+      if (familyName == this.families[i]) {
+        return i;
       }
     }
   }

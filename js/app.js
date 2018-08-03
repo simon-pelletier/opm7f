@@ -6,7 +6,7 @@ var member;
 var turn;
 var gameStarted = false;
 
-var playingTimerSimulator = 2000;
+var playingTimerSimulator = 1000;
 
 var askedCard = false;
 
@@ -408,6 +408,8 @@ function endTurn(){
             familyCompleted = Game.players[i][j].family;
             Game.removeFamilyFromHand(i, Game.players[i][j].family);
             Game.playerPoints[i] = Game.playerPoints[i] + 1;
+            var familyId = Game.getFamilyId(familyCompleted);
+            addMiniFamily(i, familyId);
           }
         } else {
           previousFamily = Game.players[i][j].family;
@@ -418,6 +420,34 @@ function endTurn(){
   }
 
   return familyCompleted;
+}
+
+function addMiniFamily(playerId, familyId){
+  if (playerId == 0) {
+    Game.p0families.push(familyId);
+  }
+  if (playerId == 1) {
+    Game.p1families.push(familyId);
+  }
+  if (playerId == 2) {
+    Game.p2families.push(familyId);
+  }
+  if (playerId == 3) {
+    Game.p3families.push(familyId);
+  }
+
+
+
+  /*var playerInfosElt = document.getElementById('infos' + playerId);
+  console.log(playerId);
+  console.log(playerInfosElt);
+  var miniFamily = document.createElement('img');
+  miniFamily.src = './img/' + Game.miniFamilies[familyId] + '.png';
+  miniFamily.id = 'miniFamily';
+  console.log(miniFamily);
+
+
+  playerInfosElt.appendChild(miniFamily);*/
 }
 
 
@@ -436,10 +466,53 @@ function updateBoard(){
     } else {
       aPlayer.className = 'bot';
     }
+
+
     var playerNameElt = document.createElement('div');
     playerNameElt.innerHTML = Game.playersNames[i] + '<div class="infoPoints">Points : ' + Game.playerPoints[i] + '</div>';
     playerNameElt.id = 'infos' + i;
     playerNameElt.className = 'infos';
+
+    var familiesCompletedTab = [Game.p0families, Game.p1families, Game.p2families, Game.p3families]
+    var familiesCompletedList = familiesCompletedTab[i];
+    for (var r = 0; r < familiesCompletedList.length; r++){
+      var aMiniFamily = document.createElement('img');
+      aMiniFamily.src = './img/' + Game.miniFamilies[familiesCompletedList[r]] + '.png';
+      aMiniFamily.id = 'miniFamily';
+      playerNameElt.appendChild(aMiniFamily);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     var rotation = -10;
     for (var j = 0; j < Game.players[i].length; j++){
       var anImage = document.createElement('img');
@@ -473,6 +546,7 @@ function updateBoard(){
       cardContainerElt.appendChild(anImage);
 
     }
+
     aPlayer.appendChild(cardContainerElt);
     aPlayer.appendChild(playerNameElt);
     board.appendChild(aPlayer);
