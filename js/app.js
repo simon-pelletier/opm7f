@@ -13,6 +13,11 @@ var askedCard = false;
 var heightG = window.innerHeight;
 var widthG = window.innerWidth;
 
+var mouseX;
+var mouseY;
+
+var infosPlayerCards = '';
+
 var board = document.createElement('div');
 board.id = 'board';
 document.body.appendChild(board);
@@ -26,12 +31,16 @@ function startGame(){
 startGame();
 
 function gameFlow(){
+  var transfertCard = document.getElementById('transfert');
+  if (transfertCard) {
+    transfertCard.remove();
+  }
   //endTurn();
-  /*if (endTurn() != false) {
+  if (endTurn() != false) {
     // POSER FAMILLE
     console.log('FAMILY !!!');
 
-  }*/
+  }
   //console.log(Game.pick[0]);
   if (Game.pick.length > 0) {
     if (gameStarted) {
@@ -64,12 +73,39 @@ function gameFlow(){
 
 }
 
+function cursorDisabled(){
+  document.body.style.cursor = 'not-allowed';
+  document.getElementById('pick').style.cursor = 'not-allowed';
+  var cardsPointer = document.getElementsByClassName('card');
+  for (var i = 0; i < cardsPointer.length; i++){
+    cardsPointer[i].style.cursor = 'not-allowed';
+  }
+  var playerCardPointer = document.getElementsByClassName('cardPlayer');
+  for (var j = 0; j < playerCardPointer.length; j++){
+    playerCardPointer[j].style.cursor = 'not-allowed';
+  }
+}
+
+function cursorEnabled(){
+  document.body.style.cursor = 'default';
+  document.getElementById('pick').style.cursor = 'pointer';
+  var cardsPointer = document.getElementsByClassName('card');
+  for (var i = 0; i < cardsPointer.length; i++){
+    cardsPointer[i].style.cursor = 'pointer';
+  }
+  var playerCardPointer = document.getElementsByClassName('cardPlayer');
+  for (var j = 0; j < playerCardPointer.length; j++){
+    playerCardPointer[j].style.cursor = 'pointer';
+  }
+}
+
 function endGame(){
   console.log('FIN !!!');
   console.log(Game.playerPoints);
 }
 
 function botsTurn(turn){
+  cursorDisabled();
   var playerName = document.getElementById('infos' + turn);
   playerName.style.color = 'rgb(255, 0, 107)';
 
@@ -147,10 +183,12 @@ function botsTurn(turn){
   function timerSimulator(){
     if (Game.isMatching(bot, enemyIa, familyIa, memberIa)){
       gameMasterSay('Et c\'est gagné pour ' + Game.playersNames[turn]);
+      transfert(enemyIa, turn);
       askedCard = true;
     } else {
 
       gameMasterSay('Perdu ! ' + Game.playersNames[turn] + ' pioche...');
+      transfert(4, turn);
       // VERIFIER SI PIOCHE BONNE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
       var cardAskedId = Game.getId(familyIa, memberIa);
@@ -178,6 +216,39 @@ function botsTurn(turn){
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*var cardPickedAnimated = document.getElementsByClassName('pick')[0];
+
+    var currentTop = (heightG / 2) - 200;
+    var currentLeft = (widthG / 2) - 200;
+    var endTop = heightG - 143;
+    var endleft = 0;
+    var endRight = widthG - 100;
+
+    animate(cardPickedAnimated,"left","px", currentLeft, endleft, 300, 0);
+*/
+
+
+
+
+
+
+
+
     setTimeout(result, playingTimerSimulator);
   }
   gameMasterSay(Game.playersNames[turn] + ' demande à ' + Game.playersNames[enemyIa] + ' ' + memberIa + ' de la famille ' + familyIa);
@@ -188,12 +259,13 @@ function botsTurn(turn){
 
 
 function selectPlayer(turn){
+  cursorEnabled();
   //console.log('Selectionner un joueur !');
   gameMasterSay('Sélectionnez un joueur');
   var joueurs = document.getElementsByClassName('bot');
   for (var i = 0; i < joueurs.length; i++){
     joueurs[i].addEventListener('click', playerSelection, false);
-    joueurs[i].style.cursor = 'pointer';
+    //joueurs[i].style.cursor = 'pointer';
   }
 
 }
@@ -203,25 +275,50 @@ function verification(){
     //console.log('Bravo ! Touché !');
     askedCard = true;
     gameMasterSay('Gagné ! C\'est encore à vous...');
+    transfert(target, 0);
+    setTimeout(result, playingTimerSimulator);
   } else {
     //var card = Game.pickCard(0);
     gameMasterSay('Perdu ! Vous piochez...');
 
-    var card = Game.pick[0];
-    showPickedCard(card);
+    var thePickElt = document.getElementById('pick');
+    thePickElt.addEventListener('click', manualPicker);
 
-    var cardAskedId = Game.getId(family, member);
-    var cardPickedId = Game.pick[0].id;
-    if (Game.isMatchingPick(cardAskedId, cardPickedId)) {
-      gameMasterSay('Incroyable ! Bonne pioche !!!');
-      askedCard = true;
-    } else {
-      askedCard = false;
+
+    function manualPicker(){
+      //console.log('pioche manuelle');
+
+      var card = Game.pick[0];
+      showPickedCard(card);
+
+      var cardAskedId = Game.getId(family, member);
+      var cardPickedId = Game.pick[0].id;
+      if (Game.isMatchingPick(cardAskedId, cardPickedId)) {
+        gameMasterSay('Incroyable ! Bonne pioche !!!');
+        askedCard = true;
+      } else {
+        askedCard = false;
+      }
+
+      Game.pickCard(0);
+      setTimeout(moveCard, 2000);
+      //console.log('Non, vous avez perdu !');
+      setTimeout(result, playingTimerSimulator + 1300);
     }
 
-    Game.pickCard(0);
-    //console.log('Non, vous avez perdu !');
+  }
 
+  function moveCard(){
+    var thisCard = document.getElementById('pickedCard');
+    //var currentTop = thisCard.style.top;
+
+    var currentTop = (heightG / 2) - 200;
+    var endTop = heightG - 143;
+
+    //(elem,style,unit,from,to,time,delay)
+    animate(thisCard,"top","px", currentTop, endTop, 300, 0);
+    animate(thisCard,"width","px", 300, 100, 300, 0);
+    //thisCard.style.top = '800px';
 
   }
 
@@ -238,7 +335,7 @@ function verification(){
     //botsTurn();
     gameFlow();
   }
-  setTimeout(result, playingTimerSimulator);
+
 }
 
 function cardSelection(){
@@ -256,7 +353,7 @@ function playerSelection(){
   var joueurs = document.getElementsByClassName('bot');
   for (var i = 0; i < joueurs.length; i++){
     joueurs[i].removeEventListener('click', playerSelection, false);
-    joueurs[i].style.cursor = 'default';
+    //joueurs[i].style.cursor = 'default';
   }
   target = this.id.charAt(this.id.length - 1)
   //console.log('Vous avez selectionné le joueur ' + target);
@@ -349,13 +446,25 @@ function updateBoard(){
       if (i == 0) {
         anImage.className = 'cardPlayer';
         anImage.src = Game.players[i][j].img;
+        anImage.addEventListener('mouseover', function( event ){
+          var memberOver = Game.getMember(event.target.id);
+          var familyOver = Game.getFamily(event.target.id);
+          infosPlayerCards = familyOver + ' - ' + memberOver;
+          var infoSelectionElt = document.getElementById('infoSelection');
+          infoSelectionElt.innerHTML = infosPlayerCards;
+          infoSelectionElt.style.display = 'block';
+        }, false);
+        anImage.addEventListener('mouseout', function( event ){
+          infosPlayerCards = '';
+          var infoSelectionElt = document.getElementById('infoSelection');
+          infoSelectionElt.innerHTML = infosPlayerCards;
+          infoSelectionElt.style.display = 'none';
+        }, false);
 
       } else {
         anImage.className = 'card';
-        anImage.src = Game.players[i][j].img;
-        //anImage.src = './img/cards/back.jpg';
-
-        //var r = getRandomNumber(-5, 5);
+        //anImage.src = Game.players[i][j].img;
+        anImage.src = './img/cards/back.jpg';
         anImage.style.transform = 'rotate(' + rotation + 'deg)';
         rotation += 3;
       }
@@ -374,8 +483,8 @@ function updateBoard(){
   for (var k = 0; k < Game.pick.length; k++){
     var anImage = document.createElement('img');
     anImage.className = 'pick';
-    anImage.src = Game.pick[k].img;
-    //anImage.src = './img/cards/back.jpg';
+    //anImage.src = Game.pick[k].img;
+    anImage.src = './img/cards/back.jpg';
     var r = getRandomNumber(-5, 5);
     anImage.style.transform = 'rotate(' + r + 'deg)';
     thePick.appendChild(anImage);
@@ -383,6 +492,15 @@ function updateBoard(){
 
   var theGameMaster = document.createElement('div');
   theGameMaster.id = 'gameMaster';
+
+  var infoSelectionElt = document.createElement('div');
+  infoSelectionElt.id = 'infoSelection';
+  infoSelectionElt.innerHTML = infosPlayerCards;
+  infoSelectionElt.style.top = mouseY;
+  infoSelectionElt.style.left = mouseX;
+
+
+  board.appendChild(infoSelectionElt);
 
   board.appendChild(theGameMaster);
 
@@ -400,7 +518,7 @@ function resize() {
     pick.style.top = (heightG / 2) - (143/2) + 'px';
 
     var gameMaster = document.getElementById('gameMaster');
-    gameMaster.style.left = (widthG / 2) - (300/2) + 'px';
+    gameMaster.style.left = (widthG / 2) - (400/2) + 'px';
     gameMaster.style.top = (heightG / 2) - 140 + 'px';
 
     var playerElt = document.getElementById('player0');
@@ -440,3 +558,18 @@ function resize() {
 }
 
 window.onresize = resize;
+onmousemove = function(e){
+
+  var infoSelectionElt = document.getElementById('infoSelection');
+
+  if (infoSelectionElt) {
+    if (infoSelectionElt.innerHTML != '') {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      infoSelectionElt.style.top = mouseY + 'px';
+      infoSelectionElt.style.left = mouseX + 'px';
+    }
+
+  }
+
+}

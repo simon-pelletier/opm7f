@@ -10,7 +10,7 @@ var Game = {
   members: new Array(),
 
   players: new Array(),
-  playerNumber: Number = 2,
+  playerNumber: Number = 4,
 
   pick: new Array(),
 
@@ -136,6 +136,7 @@ var Game = {
             this.players[target].push(targetHandTemp[j]);
           }
         }
+//        transfert(player, target);
         return true;
         break;
       } else {
