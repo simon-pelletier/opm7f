@@ -18,6 +18,18 @@ var mouseY;
 
 var infosPlayerCards = '';
 
+var soundBigFlip = document.createElement("audio");
+soundBigFlip.src = "./sound/bigFlip.wav";
+document.body.appendChild(soundBigFlip);
+
+var soundFlip = document.createElement("audio");
+soundFlip.src = "./sound/flip.wav";
+document.body.appendChild(soundFlip);
+
+var soundTic = document.createElement("audio");
+soundTic.src = "./sound/tic.wav";
+document.body.appendChild(soundTic);
+
 var board = document.createElement('div');
 board.id = 'board';
 document.body.appendChild(board);
@@ -215,40 +227,6 @@ function botsTurn(turn){
       gameFlow();
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*var cardPickedAnimated = document.getElementsByClassName('pick')[0];
-
-    var currentTop = (heightG / 2) - 200;
-    var currentLeft = (widthG / 2) - 200;
-    var endTop = heightG - 143;
-    var endleft = 0;
-    var endRight = widthG - 100;
-
-    animate(cardPickedAnimated,"left","px", currentLeft, endleft, 300, 0);
-*/
-
-
-
-
-
-
-
-
     setTimeout(result, playingTimerSimulator);
   }
   gameMasterSay(Game.playersNames[turn] + ' demande à ' + Game.playersNames[enemyIa] + ' ' + memberIa + ' de la famille ' + familyIa);
@@ -323,6 +301,7 @@ function verification(){
   }
 
   function showPickedCard(card){
+    soundBigFlip.play();
     var cardElt = document.createElement('img');
     cardElt.src = card.img;
     cardElt.id = 'pickedCard';
@@ -339,6 +318,7 @@ function verification(){
 }
 
 function cardSelection(){
+  soundTic.play();
   var id = this.id;
   family = Game.getFamily(id);
   var cards = document.getElementsByClassName('cardPlayer');
@@ -350,6 +330,7 @@ function cardSelection(){
 }
 
 function playerSelection(){
+  soundTic.play();
   var joueurs = document.getElementsByClassName('bot');
   for (var i = 0; i < joueurs.length; i++){
     joueurs[i].removeEventListener('click', playerSelection, false);
@@ -418,7 +399,6 @@ function endTurn(){
       }
     }
   }
-
   return familyCompleted;
 }
 
@@ -435,19 +415,6 @@ function addMiniFamily(playerId, familyId){
   if (playerId == 3) {
     Game.p3families.push(familyId);
   }
-
-
-
-  /*var playerInfosElt = document.getElementById('infos' + playerId);
-  console.log(playerId);
-  console.log(playerInfosElt);
-  var miniFamily = document.createElement('img');
-  miniFamily.src = './img/' + Game.miniFamilies[familyId] + '.png';
-  miniFamily.id = 'miniFamily';
-  console.log(miniFamily);
-
-
-  playerInfosElt.appendChild(miniFamily);*/
 }
 
 
@@ -467,9 +434,8 @@ function updateBoard(){
       aPlayer.className = 'bot';
     }
 
-
     var playerNameElt = document.createElement('div');
-    playerNameElt.innerHTML = Game.playersNames[i] + '<div class="infoPoints">Points : ' + Game.playerPoints[i] + '</div>';
+    playerNameElt.innerHTML = Game.playersNames[i] + '<br/>';
     playerNameElt.id = 'infos' + i;
     playerNameElt.className = 'infos';
 
@@ -478,40 +444,9 @@ function updateBoard(){
     for (var r = 0; r < familiesCompletedList.length; r++){
       var aMiniFamily = document.createElement('img');
       aMiniFamily.src = './img/' + Game.miniFamilies[familiesCompletedList[r]] + '.png';
-      aMiniFamily.id = 'miniFamily';
+      aMiniFamily.className = 'miniFamily';
       playerNameElt.appendChild(aMiniFamily);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     var rotation = -10;
     for (var j = 0; j < Game.players[i].length; j++){
@@ -548,7 +483,7 @@ function updateBoard(){
     }
 
     aPlayer.appendChild(cardContainerElt);
-    aPlayer.appendChild(playerNameElt);
+    board.appendChild(playerNameElt);
     board.appendChild(aPlayer);
   }
 
@@ -592,25 +527,73 @@ function resize() {
     pick.style.top = (heightG / 2) - (143/2) + 'px';
 
     var gameMaster = document.getElementById('gameMaster');
-    gameMaster.style.left = (widthG / 2) - (400/2) + 'px';
-    gameMaster.style.top = (heightG / 2) - 140 + 'px';
+    //gameMaster.style.left = (widthG / 2) - (400/2) + 'px';
+    //gameMaster.style.top = (heightG / 2) - 140 + 'px';
+    gameMaster.style.left = 0  + 'px';
+    gameMaster.style.top = 0 + 'px';
 
     var playerElt = document.getElementById('player0');
     var playerWidth = playerElt.offsetWidth;
     playerElt.style.left = (widthG / 2) - (playerWidth/2) + 'px';
 
+    var infoContainer0 = document.getElementById('infos0');
+    infoContainer0.style.position = 'absolute';
+    infoContainer0.style.bottom = 170 + 'px';
+    infoContainer0.style.left = (widthG/2) - (infoContainer0.offsetWidth/2) + 'px';
+
+    if (playerElt.offsetHeight > 150) {
+      infoContainer0.style.bottom = 250 + 'px';
+      var cardPlayer = document.getElementsByClassName('cardPlayer');
+      for (var y = 0; y < cardPlayer.length; y++){
+        cardPlayer[y].style.marginTop = '-100px';
+      }
+    }
+
+
+
     var player1Base = document.getElementById('player1');
     if (player1Base) {
-      var player1Container = document.getElementById('player1').childNodes[0];
-      player1Container.style.top = (heightG/2) - 50 + 'px';
+      //var player1Container = document.getElementById('player1').childNodes[0];
+      player1Base.style.position = 'absolute';
+      player1Base.style.transform = 'rotate(90deg)';
+      player1Base.style.top = (heightG/2) - 50 + 'px';
+      player1Base.style.left = 0 - (player1Base.offsetWidth/3) + 'px';
+
+      var infoContainer1 = document.getElementById('infos1');
+      infoContainer1.style.position = 'absolute';
+      infoContainer1.style.top = (heightG/2) - 50 + 'px';
+      infoContainer1.style.left =  150 + 'px';
+    }
+
+    var player2Base = document.getElementById('player2');
+    if (player2Base) {
+      //var player2Container = document.getElementById('player2').childNodes[0];
+      player2Base.style.position = 'absolute';
+      player2Base.style.transform = 'rotate(180deg)';
+      player2Base.style.top = -40 + 'px';
+      player2Base.style.left = (widthG / 2) - (player2Base.offsetWidth) + 25 + 'px';
+
+      var infoContainer2 = document.getElementById('infos2');
+      infoContainer2.style.position = 'absolute';
+      infoContainer2.style.top = 150 + 'px';
+      infoContainer2.style.left = (widthG/2) - (infoContainer0.offsetWidth/2) + 'px';
     }
 
     var player3Base = document.getElementById('player3');
     if (player3Base) {
-      var player3Container = document.getElementById('player3').childNodes[0];
-      player3Container.style.top = (heightG/2) - 130 + 'px';
-    }
+      //var player3Container = document.getElementById('player3').childNodes[0];
+      player3Base.style.position = 'absolute';
+      player3Base.style.transform = 'rotate(-90deg)';
+      player3Base.style.top = (heightG/2) - 130 + 'px';
+      //player3Base.style.left = widthG - (player3Base.offsetWidth) + 'px';
+      player3Base.style.right = 0 - (player3Base.offsetWidth/3) + 'px';
 
+      var infoContainer3 = document.getElementById('infos3');
+      infoContainer3.style.position = 'absolute';
+      infoContainer3.style.top = (heightG/2) - 50 + 'px';
+      infoContainer3.style.left = widthG - 220 + 'px';
+    }
+//transform: rotate(180deg);
 
 
 
