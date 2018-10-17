@@ -4,13 +4,13 @@ var Game = {
   allCards: new Array(),
   cardsNumber: Number = 42,
 
-  startCardNumber: Number = 8,
+  startCardNumber: Number = 7,
 
   families: new Array(),
   members: new Array(),
 
   players: new Array(),
-  playerNumber: Number = 4,
+  playerNumber: Number = 3,
 
   pick: new Array(),
 
@@ -38,7 +38,7 @@ var Game = {
   initGame: function(){
 
 
-    this.families.push('Europe', 'Afrique Noire', 'Asie', 'Inde', 'Amérique du Sud', 'Grand Nord', 'Pays Arabes');
+    this.families.push('Europe', 'Afrique Noire', 'Chine', 'Inde', 'Amérique du Sud', 'Grand Nord', 'Afrique du Nord');
     this.members.push('Le grand-père', 'La grand-mère', 'Le père', 'La mère', 'Le fils', 'La fille');
 
     this.miniFamilies.push('mini_europe', 'mini_afrique', 'mini_asie', 'mini_inde', 'mini_amerique', 'mini_nord', 'mini_paysarabes');

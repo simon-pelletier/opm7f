@@ -18,6 +18,27 @@ var mouseY;
 
 var infosPlayerCards = '';
 
+//var audioMsgFam = new SpeechSynthesisUtterance('Dans la famille');
+//window.speechSynthesis.speak(audioMsgFam);
+//var audioMsgMember = new SpeechSynthesisUtterance('je voudrais');
+//window.speechSynthesis.speak(audioMsgMember);
+
+/*var synth = window.speechSynthesis;
+var voices = getVoices();*/
+
+
+function sayBySpeech(msg){
+  var audioMsg = new SpeechSynthesisUtterance(msg);
+
+  //msg.lang = 'fr-FR';
+  msg.lang = 'en-EN';
+  msg.volume = 0.8;
+  msg.pitch = 1.5;
+  /*var voices = getVoices();
+  msg.voice = voices[1];*/
+  window.speechSynthesis.speak(audioMsg);
+}
+
 var soundBigFlip = document.createElement("audio");
 soundBigFlip.src = "./sound/bigFlip.wav";
 document.body.appendChild(soundBigFlip);
@@ -119,7 +140,8 @@ function endGame(){
 function botsTurn(turn){
   cursorDisabled();
   var playerName = document.getElementById('infos' + turn);
-  playerName.style.color = 'rgb(255, 0, 107)';
+  playerName.style.color = 'rgb(0, 205, 64)';
+  playerName.style.fontWeight = '800';
 
   var botHand = Game.players[turn];
   var bot = turn;
@@ -195,11 +217,13 @@ function botsTurn(turn){
   function timerSimulator(){
     if (Game.isMatching(bot, enemyIa, familyIa, memberIa)){
       gameMasterSay('Et c\'est gagné pour ' + Game.playersNames[turn]);
+      sayBySpeech('Et c\'est gagné pour ' + Game.playersNames[turn]);
       transfert(enemyIa, turn);
       askedCard = true;
     } else {
 
       gameMasterSay('Perdu ! ' + Game.playersNames[turn] + ' pioche...');
+      sayBySpeech('Perdu ! ' + Game.playersNames[turn] + ' pioche...');
       transfert(4, turn);
       // VERIFIER SI PIOCHE BONNE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -208,6 +232,7 @@ function botsTurn(turn){
         var cardPickedId = Game.pick[0].id;
         if (Game.isMatchingPick(cardAskedId, cardPickedId)) {
           gameMasterSay('Incroyable ! Bonne pioche !!!');
+          sayBySpeech('Incroyable ! Bonne pioche !!!');
           askedCard = true;
         } else {
           askedCard = false;
@@ -230,7 +255,7 @@ function botsTurn(turn){
     setTimeout(result, playingTimerSimulator);
   }
   gameMasterSay(Game.playersNames[turn] + ' demande à ' + Game.playersNames[enemyIa] + ' ' + memberIa + ' de la famille ' + familyIa);
-
+  sayBySpeech(Game.playersNames[enemyIa] + ', dans la famille ' + familyIa + ' je voudrais ' + memberIa);
   setTimeout(timerSimulator, playingTimerSimulator);
 }
 
@@ -240,6 +265,7 @@ function selectPlayer(turn){
   cursorEnabled();
   //console.log('Selectionner un joueur !');
   gameMasterSay('Sélectionnez un joueur');
+  sayBySpeech('Sélectionnez un joueur');
   var joueurs = document.getElementsByClassName('bot');
   for (var i = 0; i < joueurs.length; i++){
     joueurs[i].addEventListener('click', playerSelection, false);
@@ -253,11 +279,13 @@ function verification(){
     //console.log('Bravo ! Touché !');
     askedCard = true;
     gameMasterSay('Gagné ! C\'est encore à vous...');
+    sayBySpeech('Gagné ! C\'est encore à vous...');
     transfert(target, 0);
     setTimeout(result, playingTimerSimulator);
   } else {
     //var card = Game.pickCard(0);
     gameMasterSay('Perdu ! Vous piochez...');
+    sayBySpeech('Perdu ! Vous piochez...');
 
     var thePickElt = document.getElementById('pick');
     thePickElt.addEventListener('click', manualPicker);
@@ -273,6 +301,7 @@ function verification(){
       var cardPickedId = Game.pick[0].id;
       if (Game.isMatchingPick(cardAskedId, cardPickedId)) {
         gameMasterSay('Incroyable ! Bonne pioche !!!');
+        sayBySpeech('Incroyable ! Bonne pioche !!!');
         askedCard = true;
       } else {
         askedCard = false;
@@ -343,6 +372,7 @@ function playerSelection(){
 
 function familySelection(target){
   gameMasterSay('Sélectionnez une famille parmis vos cartes');
+  sayBySpeech('Sélectionnez une famille parmis vos cartes');
   var cards = document.getElementsByClassName('cardPlayer');
   for (var i = 0; i < cards.length; i++){
     cards[i].addEventListener('click', cardSelection, false);
@@ -351,6 +381,7 @@ function familySelection(target){
 
 function memberSelection(){
   gameMasterSay('Sélectionnez un membre de cette famille');
+  sayBySpeech('Sélectionnez un membre de cette famille');
   var memberSelector = document.createElement('div');
   memberSelector.id = 'memberSelector';
   for (var i = 0; i < Game.members.length; i++){
@@ -427,7 +458,9 @@ function updateBoard(){
     cardContainerElt.className = 'cardContainer';
     var aPlayer = document.createElement('div');
     aPlayer.className = 'player';
+
     aPlayer.id = 'player' + i;
+
     if (i == 0) {
       aPlayer.className = 'player';
     } else {
@@ -565,7 +598,7 @@ function resize() {
       infoContainer1.style.left =  150 + 'px';
     }
 
-    var player2Base = document.getElementById('player2');
+    /*var player2Base = document.getElementById('player2');
     if (player2Base) {
       //var player2Container = document.getElementById('player2').childNodes[0];
       player2Base.style.position = 'absolute';
@@ -577,9 +610,9 @@ function resize() {
       infoContainer2.style.position = 'absolute';
       infoContainer2.style.top = 150 + 'px';
       infoContainer2.style.left = (widthG/2) - (infoContainer0.offsetWidth/2) + 'px';
-    }
+    }*/
 
-    var player3Base = document.getElementById('player3');
+    var player3Base = document.getElementById('player2');
     if (player3Base) {
       //var player3Container = document.getElementById('player3').childNodes[0];
       player3Base.style.position = 'absolute';
@@ -588,7 +621,7 @@ function resize() {
       //player3Base.style.left = widthG - (player3Base.offsetWidth) + 'px';
       player3Base.style.right = 0 - (player3Base.offsetWidth/3) + 'px';
 
-      var infoContainer3 = document.getElementById('infos3');
+      var infoContainer3 = document.getElementById('infos2');
       infoContainer3.style.position = 'absolute';
       infoContainer3.style.top = (heightG/2) - 50 + 'px';
       infoContainer3.style.left = widthG - 220 + 'px';

@@ -46,10 +46,10 @@ body{
 //300x428
 #gameMaster{
   z-index: 10!important;
-  width: auto;
+  width: 100%!important;
   padding-right: 20px;
   padding-left: 20px;
-  max-width: 600px;
+  //max-width: 600px;
   min-height: 50px;
   font-size: 1.2em;
   line-height: 50px;
@@ -58,6 +58,8 @@ body{
   text-align: center;
   position: absolute;
   background-color: #141414;
+  //right: 10vw!important;
+  top: 0vh!important;
 }
 .pick{
   transition: 0.5s;
