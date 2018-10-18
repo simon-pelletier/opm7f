@@ -49,6 +49,9 @@ function transfert(source, target){
 }
 
 function eltTop(elt){
+  if (elt == 2) {
+    elt = 3;
+  }
   if (elt == 0) {
     return heightG;
   }
@@ -66,6 +69,9 @@ function eltTop(elt){
   }
 }
 function eltLeft(elt){
+  if (elt == 2) {
+    elt = 3;
+  }
   if (elt == 0) {
     return (widthG/2) - 50;
   }

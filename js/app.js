@@ -28,15 +28,18 @@ var voices = getVoices();*/
 
 
 function sayBySpeech(msg){
-  var audioMsg = new SpeechSynthesisUtterance(msg);
+  /*var audioMsg = new SpeechSynthesisUtterance(msg);
 
-  //msg.lang = 'fr-FR';
-  msg.lang = 'en-EN';
+  msg.lang = 'fr-FR';
   msg.volume = 0.8;
-  msg.pitch = 1.5;
+  msg.pitch = 1.5;*/
+
+
   /*var voices = getVoices();
   msg.voice = voices[1];*/
-  window.speechSynthesis.speak(audioMsg);
+  //console.log(msg);
+
+  //window.speechSynthesis.speak(audioMsg);
 }
 
 var soundBigFlip = document.createElement("audio");
@@ -144,6 +147,7 @@ function botsTurn(turn){
   playerName.style.fontWeight = '800';
 
   var botHand = Game.players[turn];
+
   var bot = turn;
   var enemyIa;
   do{
@@ -215,6 +219,9 @@ function botsTurn(turn){
   //console.log('Famille : ' + familyIa);
   //console.log('Membre : ' + memberIa);
   function timerSimulator(){
+    if (turn == 2) {
+      turn = 3;
+    }
     if (Game.isMatching(bot, enemyIa, familyIa, memberIa)){
       gameMasterSay('Et c\'est gagné pour ' + Game.playersNames[turn]);
       sayBySpeech('Et c\'est gagné pour ' + Game.playersNames[turn]);
