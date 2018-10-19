@@ -6,9 +6,11 @@ var member;
 var turn;
 var gameStarted = false;
 
-var playingTimerSimulator = 1000;
+var playingTimerSimulator = 3000;
 
 var askedCard = false;
+
+var playerNameIsDefined = false;
 
 var heightG = window.innerHeight;
 var widthG = window.innerWidth;
@@ -59,12 +61,47 @@ board.id = 'board';
 document.body.appendChild(board);
 
 function startGame(){
+  var playerName = document.getElementById('nameInput').value;
+  //console.log(playerName);
+  Game.playersNames[0] = playerName;
+
+  var startForm = document.getElementById('startForm');
+  startForm.remove();
+
   Game.initGame();
   updateBoard();
   //resize();
   gameFlow();
 }
-startGame();
+
+function homeScreen(){
+  var form = document.createElement('div');
+  form.id = 'startForm';
+  form.innerHTML = 'Votre pseudo : ';
+
+  var nameInput = document.createElement('input');
+  nameInput.id = 'nameInput';
+  nameInput.autofocus = true;
+
+  var playGameBtn = document.createElement('button');
+  playGameBtn.textContent = 'JOUER';
+  playGameBtn.id = 'playButton';
+
+  playGameBtn.addEventListener('click', function(){
+    if (nameInput.value != '') {
+      playerNameIsDefined = true;
+      startGame()
+    }
+  }, false);
+
+
+  form.appendChild(nameInput);
+  form.appendChild(playGameBtn);
+  document.body.appendChild(form);
+  //startGame();
+}
+homeScreen();
+//startGame();
 
 function gameFlow(){
   var transfertCard = document.getElementById('transfert');
@@ -259,9 +296,14 @@ function botsTurn(turn){
       gameFlow();
     }
 
-    setTimeout(result, playingTimerSimulator);
+    setTimeout(result, playingTimerSimulator / 5);
   }
-  gameMasterSay(Game.playersNames[turn] + ' demande à ' + Game.playersNames[enemyIa] + ' ' + memberIa + ' de la famille ' + familyIa);
+  if (enemyIa == 0) {
+    gameMasterSay(Game.playersNames[turn] + ' vous demande ' + memberIa + ' de la famille ' + familyIa);
+  } else {
+    gameMasterSay(Game.playersNames[turn] + ' demande à ' + Game.playersNames[enemyIa] + ' ' + memberIa + ' de la famille ' + familyIa);
+  }
+
   sayBySpeech(Game.playersNames[enemyIa] + ', dans la famille ' + familyIa + ' je voudrais ' + memberIa);
   setTimeout(timerSimulator, playingTimerSimulator);
 }
@@ -288,7 +330,7 @@ function verification(){
     gameMasterSay('Gagné ! C\'est encore à vous...');
     sayBySpeech('Gagné ! C\'est encore à vous...');
     transfert(target, 0);
-    setTimeout(result, playingTimerSimulator);
+    setTimeout(result, playingTimerSimulator / 3);
   } else {
     //var card = Game.pickCard(0);
     gameMasterSay('Perdu ! Vous piochez...');
@@ -317,7 +359,7 @@ function verification(){
       Game.pickCard(0);
       setTimeout(moveCard, 2000);
       //console.log('Non, vous avez perdu !');
-      setTimeout(result, playingTimerSimulator + 1300);
+      setTimeout(result, playingTimerSimulator - 500);
     }
 
   }
@@ -562,32 +604,35 @@ function resize() {
     heightG = window.innerHeight;
     widthG = window.innerWidth;
 
-    var pick = document.getElementById('pick');
-    pick.style.left = (widthG / 2) - (100/2) + 'px';
-    pick.style.top = (heightG / 2) - (143/2) + 'px';
+    if (playerNameIsDefined) {
+      var pick = document.getElementById('pick');
+      pick.style.left = (widthG / 2) - (100/2) + 'px';
+      pick.style.top = (heightG / 2) - (143/2) + 'px';
 
-    var gameMaster = document.getElementById('gameMaster');
-    //gameMaster.style.left = (widthG / 2) - (400/2) + 'px';
-    //gameMaster.style.top = (heightG / 2) - 140 + 'px';
-    gameMaster.style.left = 0  + 'px';
-    gameMaster.style.top = 0 + 'px';
+      var gameMaster = document.getElementById('gameMaster');
+      //gameMaster.style.left = (widthG / 2) - (400/2) + 'px';
+      //gameMaster.style.top = (heightG / 2) - 140 + 'px';
+      gameMaster.style.left = 0  + 'px';
+      gameMaster.style.top = 0 + 'px';
 
-    var playerElt = document.getElementById('player0');
-    var playerWidth = playerElt.offsetWidth;
-    playerElt.style.left = (widthG / 2) - (playerWidth/2) + 'px';
+      var playerElt = document.getElementById('player0');
+      var playerWidth = playerElt.offsetWidth;
+      playerElt.style.left = (widthG / 2) - (playerWidth/2) + 'px';
 
-    var infoContainer0 = document.getElementById('infos0');
-    infoContainer0.style.position = 'absolute';
-    infoContainer0.style.bottom = 170 + 'px';
-    infoContainer0.style.left = (widthG/2) - (infoContainer0.offsetWidth/2) + 'px';
+      var infoContainer0 = document.getElementById('infos0');
+      infoContainer0.style.position = 'absolute';
+      infoContainer0.style.bottom = 170 + 'px';
+      infoContainer0.style.left = (widthG/2) - (infoContainer0.offsetWidth/2) + 'px';
 
-    if (playerElt.offsetHeight > 150) {
-      infoContainer0.style.bottom = 250 + 'px';
-      var cardPlayer = document.getElementsByClassName('cardPlayer');
-      for (var y = 0; y < cardPlayer.length; y++){
-        cardPlayer[y].style.marginTop = '-100px';
+      if (playerElt.offsetHeight > 150) {
+        infoContainer0.style.bottom = 250 + 'px';
+        var cardPlayer = document.getElementsByClassName('cardPlayer');
+        for (var y = 0; y < cardPlayer.length; y++){
+          cardPlayer[y].style.marginTop = '-100px';
+        }
       }
     }
+
 
 
 

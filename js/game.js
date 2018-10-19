@@ -36,7 +36,9 @@ var Game = {
 
 
   initGame: function(){
-
+    
+    //New name
+    //this.playersNames[0] = 'Arnold';
 
     this.families.push('Europe', 'Afrique Noire', 'Chine', 'Inde', 'Amérique du Sud', 'Grand Nord', 'Afrique du Nord');
     this.members.push('Le grand-père', 'La grand-mère', 'Le père', 'La mère', 'Le fils', 'La fille');
