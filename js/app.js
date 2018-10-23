@@ -94,7 +94,6 @@ function homeScreen(){
     }
   }, false);
 
-
   form.appendChild(nameInput);
   form.appendChild(playGameBtn);
   document.body.appendChild(form);
@@ -173,8 +172,13 @@ function cursorEnabled(){
 }
 
 function endGame(){
-  console.log('FIN !!!');
-  console.log(Game.playerPoints);
+  if (Game.playerPoints[0] > Game.playerPoints[1] && Game.playerPoints[0] > Game.playerPoints[2]) {
+    console.log('Vous avez gagné !!!');
+  } else if (Game.playerPoints[1] > Game.playerPoints[0] && Game.playerPoints[1] > Game.playerPoints[2]) {
+    console.log('Georges a gagné !!!');
+  } else if (Game.playerPoints[2] > Game.playerPoints[0] && Game.playerPoints[2] > Game.playerPoints[1]) {
+    console.log('Rick a gagné !!!');
+  }
 }
 
 function botsTurn(turn){
